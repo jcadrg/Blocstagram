@@ -11,6 +11,7 @@
 #import "Media.h"
 #import "Comment.h"
 #import "DataSource.h"
+#import "MediaTableViewCell.h"
 
 @interface ImagesTableViewController ()
 
@@ -34,8 +35,10 @@
             [self.images addObject:image];
         }
     }*/
+    //[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"imageCell"];
+    [self.tableView registerClass:[MediaTableViewCell class] forCellReuseIdentifier:@"mediaCell"];
     
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"imageCell"];
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -49,10 +52,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     //return self.images.count;
+
+    //return [DataSource sharedInstance].mediaItems.count;
     return [self items].count;
 }
 
 -(id) initWithStyle:(UITableViewStyle)style{
+
+    
     self = [super initWithStyle:style];
     if (self) {
         //custom initialization
@@ -66,7 +73,8 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"imageCell" forIndexPath:indexPath];
+
+    /*UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"imageCell" forIndexPath:indexPath];
     
     static NSInteger imageViewTag = 1234;
     UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:imageViewTag];
@@ -81,7 +89,7 @@
         
         imageView.tag = imageViewTag;
         [cell.contentView addSubview:imageView];
-        
+    
         
     }
     
@@ -89,8 +97,11 @@
     //imageView.image = image;
     
     Media *item = [self items][indexPath.row];
-    imageView.image =item.image;
+    imageView.image =item.image;*/
  
+    MediaTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"mediaCell" forIndexPath:indexPath];
+    cell.mediaItem =[self items][indexPath.row];
+
     
     return cell;
 }
@@ -98,8 +109,10 @@
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     //UIImage *image =self.images[indexPath.row];
     Media *item = [self items][indexPath.row];
-    UIImage *image=item.image;
-    return (CGRectGetWidth(self.view.frame) / image.size.width) * image.size.height;
+    //UIImage *image=item.image;
+    //return (CGRectGetWidth(self.view.frame) / image.size.width) * image.size.height;
+    //return 300 +(image.size.height /image.size.width * CGRectGetWidth(self.view.frame));
+    return [MediaTableViewCell heightForMediaItem:item width:CGRectGetWidth(self.view.frame)];
 }
 
 
@@ -114,19 +127,32 @@
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [self.images removeObjectAtIndex:indexPath.row];
+        
+        //[self.images removeObjectAtIndex:indexPath.row];
+        
+        [[DataSource sharedInstance] removeMediaItemsAtIndex:(NSUInteger)indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    
+
+ 
         } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
 
 - (NSArray *) items{
-    return [DataSource sharedInstace].mediaItems;
+    return [DataSource sharedInstance].mediaItems;
+
 }
+
+/*-(void) setEditing:(BOOL)editing animated:(BOOL)animated{
+    [super setEditing:YES animated:YES];
+
+    
+}*/
+
 
 
 /*

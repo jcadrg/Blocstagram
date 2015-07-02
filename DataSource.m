@@ -21,7 +21,7 @@
 @implementation DataSource
 
 
-+(instancetype) sharedInstace{
++(instancetype) sharedInstance{
     static dispatch_once_t once;
     static id  sharedInstance;
     dispatch_once(&once, ^{
@@ -39,6 +39,38 @@
     
     return self;
 }
+
+-(void) removeMediaItemsAtIndex:(NSUInteger)index{
+    NSMutableArray *randomMediaItems = [NSMutableArray arrayWithArray:self.mediaItems];
+    [randomMediaItems removeObjectAtIndex:index];
+    self.mediaItems = randomMediaItems;
+    
+}
+
+/*-(void) addOneMediaItem{
+    NSMutableArray *randomMediaItems = [NSMutableArray array];
+    NSString *imageName = [NSString stringWithFormat:@"%d.jpg",5];
+    UIImage *image =[UIImage imageNamed:imageName];
+    Media *media =[[Media alloc]init];
+    
+    if (image) {
+        media.user = [self randomUser];
+        media.image = image;
+        
+        NSUInteger commentCount = arc4random_uniform(10);
+        NSMutableArray *randomComments = [NSMutableArray array];
+        for (int i=0; i<=commentCount; i++) {
+            Comment *randomComment =[self randomComment];
+            [randomComments addObject:randomComment];
+        }
+        
+        media.comments = randomComments;
+    }
+    
+    [randomMediaItems addObject:media];
+    self.mediaItems = randomMediaItems;
+    
+}*/
 
 -(void) addRandomData{
     NSMutableArray *randomMediaItems = [NSMutableArray array];
@@ -62,6 +94,7 @@
             }
             
             media.comments = randomComments;
+            
             [randomMediaItems addObject:media];
         }
     }
@@ -112,7 +145,7 @@
     
     NSMutableString *s = [NSMutableString string];
     
-    for (NSUInteger i=0; i < len; i++) {
+    for (NSUInteger i=0U; i < len; i++) {
         u_int32_t r = arc4random_uniform((u_int32_t)[alphabet length]);
         unichar c = [alphabet characterAtIndex:r];
         [s appendFormat:@"%C",c];

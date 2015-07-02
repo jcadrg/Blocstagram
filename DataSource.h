@@ -10,9 +10,11 @@
 
 @interface DataSource : NSObject
 
-+(instancetype) sharedInstace;
++(instancetype) sharedInstance;
 
 @property (nonatomic,strong,readonly) NSArray *mediaItems;
+
+-(void) removeMediaItemsAtIndex:(NSUInteger)index;
 
 
 
