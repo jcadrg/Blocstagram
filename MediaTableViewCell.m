@@ -49,7 +49,7 @@ static NSParagraphStyle *paragraphStyle;
     if(self){
         self.mediaImageView=[[UIImageView alloc] init];
         self.usernameAndCaptionLabel =[[UILabel alloc] init];
-        //self.usernameAndCaptionLabel.numberOfLines = 0;
+        self.usernameAndCaptionLabel.numberOfLines = 0;
         self.commentLabel = [[UILabel alloc] init];
         self.commentLabel.numberOfLines = 0;
         
@@ -129,7 +129,7 @@ static NSParagraphStyle *paragraphStyle;
         [oneCommentString addAttribute:NSFontAttributeName value:boldFont range:userNameRange];
         [oneCommentString addAttribute:NSForegroundColorAttributeName value:linkColor range:userNameRange];
         
-        [oneCommentString appendAttributedString:oneCommentString];
+        [commentString appendAttributedString:oneCommentString];
     
     }
     return commentString;
@@ -164,6 +164,9 @@ static NSParagraphStyle *paragraphStyle;
     
     self.usernameAndCaptionLabelHeightConstraint.constant=userNameLabelSize.height + 20;
     self.commentLabelHeightConstraint.constant = commentLabelSize.height + 20;
+    
+    self.usernameAndCaptionLabel.backgroundColor=userNameLabelGray;
+    self.commentLabel.backgroundColor=commentLabelGray;
     
     //hide the line between cells
     self.separatorInset = UIEdgeInsetsMake(0, 0, 0, CGRectGetWidth(self.bounds));
