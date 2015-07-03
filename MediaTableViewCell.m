@@ -19,6 +19,7 @@
 @property (nonatomic,strong) NSLayoutConstraint *imageHeightConstraint;
 @property (nonatomic,strong) NSLayoutConstraint *usernameAndCaptionLabelHeightConstraint;
 @property (nonatomic,strong) NSLayoutConstraint *commentLabelHeightConstraint;
+@property (nonatomic,strong) NSLayoutConstraint *imageWidthConstraint;
 
 @end
 
@@ -59,18 +60,21 @@ static NSParagraphStyle *paragraphStyle;
             view.translatesAutoresizingMaskIntoConstraints = NO;
         
         }
-        
+        self.usernameAndCaptionLabel.backgroundColor = [UIColor redColor];
         NSDictionary *viewDictionary = NSDictionaryOfVariableBindings(_mediaImageView,_usernameAndCaptionLabel,_commentLabel);
         
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_mediaImageView]|" options:kNilOptions metrics:nil views:viewDictionary]];
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_usernameAndCaptionLabel]|" options:kNilOptions metrics:nil views:viewDictionary]];
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_commentLabel]|" options:kNilOptions metrics:nil views:viewDictionary]];
-        
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_mediaImageView][_usernameAndCaptionLabel][_commentLabel]" options:kNilOptions metrics:nil views:viewDictionary]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_mediaImageView]|" options:kNilOptions metrics:nil views:viewDictionary]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_usernameAndCaptionLabel]|" options:kNilOptions metrics:nil views:viewDictionary]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_commentLabel]|" options:kNilOptions metrics:nil views:viewDictionary]];
+  
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_mediaImageView][_usernameAndCaptionLabel][_commentLabel]|" options:kNilOptions metrics:nil views:viewDictionary]];
         
         self.imageHeightConstraint=[NSLayoutConstraint constraintWithItem:_mediaImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100];
-        self.usernameAndCaptionLabelHeightConstraint = [NSLayoutConstraint constraintWithItem:_usernameAndCaptionLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100];
+    //    self.usernameAndCaptionLabelHeightConstraint = [NSLayoutConstraint constraintWithItem:_usernameAndCaptionLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100];
+        self.usernameAndCaptionLabelHeightConstraint = [NSLayoutConstraint constraintWithItem:_usernameAndCaptionLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100];
         self.commentLabelHeightConstraint = [NSLayoutConstraint constraintWithItem:_commentLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100];
+        
+        //self.imageWidthConstraint = [NSLayoutConstraint constraintWithItem:_mediaImageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:320];
         
         [self.contentView addConstraints:@[self.imageHeightConstraint,self.usernameAndCaptionLabelHeightConstraint,self.commentLabelHeightConstraint]];
         
@@ -80,8 +84,8 @@ static NSParagraphStyle *paragraphStyle;
 }
 
 +(void) load{
-    lightFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:11];
-    boldFont = [UIFont fontWithName:@"HelveticaNeue-Bold" size:11];
+    lightFont = [UIFont fontWithName:@"HelveticaNeue-Thin" size:13];
+    boldFont = [UIFont fontWithName:@"HelveticaNeue-Bold" size:13];
     userNameLabelGray =[UIColor colorWithRed:0.933 green:0.933 blue:0.933 alpha:1];
     commentLabelGray =[UIColor colorWithRed:0.898 green:0.898 blue:0.898 alpha:1];
     linkColor = [UIColor colorWithRed:0.345 green:0.314 blue:0.427 alpha:1];
@@ -129,8 +133,8 @@ static NSParagraphStyle *paragraphStyle;
         [oneCommentString addAttribute:NSFontAttributeName value:boldFont range:userNameRange];
         [oneCommentString addAttribute:NSForegroundColorAttributeName value:linkColor range:userNameRange];
         
-        [oneCommentString appendAttributedString:oneCommentString];
-    
+        [commentString appendAttributedString:oneCommentString];
+        
     }
     return commentString;
 }
@@ -191,15 +195,20 @@ static NSParagraphStyle *paragraphStyle;
     //make it adjust the image view and labels
     //[layoutCell layoutSubviews];
     
-    layoutCell.frame = CGRectMake(0, 0, width, CGRectGetHeight(layoutCell.frame));
+    
+    //set it again to the given width, and max possible height IMPORTANT
+    //layoutCell.frame = CGRectMake(0, 0, width, CGRectGetHeight(layoutCell.frame));
     
     //the height will be  wherever the bottom of the comments labels
-    [layoutCell setNeedsLayout];
+    
+    //RESTORE THIS LATER
+    //[layoutCell setNeedsLayout];
     [layoutCell layoutIfNeeded];
     
     
-    
-    return CGRectGetMaxY(layoutCell.commentLabel.frame);
+    //RESTORE THIS AND DELETE SECOND RETURN
+    //return CGRectGetMaxY(layoutCell.commentLabel.frame);
+    return CGRectGetMaxY(layoutCell.mediaImageView.frame);
 }
 
 @end

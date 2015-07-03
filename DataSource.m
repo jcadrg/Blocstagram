@@ -84,7 +84,8 @@
             Media *media =[[Media alloc]init];
             media.user =[self randomUser];
             media.image = image;
-            media.caption =@"Image caption";
+        
+            
             
             NSUInteger commentCount = arc4random_uniform(10);
             NSMutableArray *randomComments =[NSMutableArray array];
@@ -121,6 +122,7 @@
 
 -(Comment *) randomComment{
     Comment *comment = [[Comment alloc] init];
+
     
     comment.from =[self randomUser];
     
