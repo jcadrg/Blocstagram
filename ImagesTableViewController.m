@@ -36,6 +36,10 @@
         }
     }*/
     //[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"imageCell"];
+    
+    //class added as an oberserver
+    [[DataSource sharedInstance] addObserver:self forKeyPath:@"mediaItems" options:0 context:nil];
+    
     [self.tableView registerClass:[MediaTableViewCell class] forCellReuseIdentifier:@"mediaCell"];
     
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -133,8 +137,11 @@
         
         //[self.images removeObjectAtIndex:indexPath.row];
         
-        [[DataSource sharedInstance] removeMediaItemsAtIndex:(NSUInteger)indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        Media *item = [self items][indexPath.row];
+        [[DataSource sharedInstance] deleteMediaItem:item];
+        
+        /*[[DataSource sharedInstance] removeMediaItemsAtIndex:(NSUInteger)indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];*/
 
  
         } else if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -146,6 +153,62 @@
     return [DataSource sharedInstance].mediaItems;
 
 }
+
+//When a class gets added as an observer, it also must be set to auto remove itself as an observer later
+-(void) dealloc{
+    [[DataSource sharedInstance] removeObserver:self forKeyPath:@"mediaItems"];
+}
+#pragma mark handling key value Notifications
+
+-(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    
+    //Checks if the update is coming from the registered object and mediaItems the updated key
+    if (object == [DataSource sharedInstance] && [keyPath isEqualToString:@"mediaItems"]) {
+        
+        //mediaItems changed. This checks what kind of change it is.
+        int kindOfChange =[change[NSKeyValueChangeKindKey] intValue];
+        
+        if(kindOfChange == NSKeyValueChangeSetting){
+            
+            //this means a new set of images array
+            [self.tableView reloadData];
+            
+            
+            
+        }else if(kindOfChange == NSKeyValueChangeInsertion || kindOfChange == NSKeyValueChangeRemoval || kindOfChange == NSKeyValueChangeReplacement){
+            
+            NSIndexSet *indexSetOfChanges = change[NSKeyValueChangeIndexesKey];
+            
+            // Convert this NSIndexSet to an NSArray of NSIndexPaths (which is what the table view animation methods require)
+            NSMutableArray *indexPathsThatChanged = [NSMutableArray array];
+            [indexSetOfChanges enumerateIndexesUsingBlock:^(NSUInteger idx,BOOL *stop){
+                NSIndexPath *newIndexPath =[NSIndexPath indexPathForRow:idx inSection:0];
+                [indexPathsThatChanged addObject:newIndexPath];
+            }];
+            
+            // Call `beginUpdates` to tell the table view we're about to make changes
+            [self.tableView beginUpdates];
+            
+            //Tell the table view what the changes are
+            
+            if (kindOfChange == NSKeyValueChangeInsertion) {
+                [self.tableView insertRowsAtIndexPaths:indexPathsThatChanged withRowAnimation:UITableViewRowAnimationAutomatic];
+            
+            }else if(kindOfChange == NSKeyValueChangeRemoval){
+                [self.tableView deleteRowsAtIndexPaths:indexPathsThatChanged withRowAnimation:UITableViewRowAnimationAutomatic];
+                
+            }else if(kindOfChange == NSKeyValueChangeReplacement){
+                [self.tableView reloadRowsAtIndexPaths:indexPathsThatChanged withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+            
+            //Tell the table view that we're done telling it about changes, and to complete the animation
+            [self.tableView endUpdates];
+        }
+    }
+    
+}
+
+
 
 /*-(void) setEditing:(BOOL)editing animated:(BOOL)animated{
     [super setEditing:YES animated:YES];
