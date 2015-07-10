@@ -10,6 +10,7 @@
 
 
 
+
 @class Media;
 
 typedef void (^NewItemCompletionBlock)(NSError *error);
@@ -19,8 +20,10 @@ typedef void (^NewItemCompletionBlock)(NSError *error);
 +(instancetype) sharedInstance;
 
 
-
+@property (nonatomic, strong, readonly) NSString *accessToken;
 @property (nonatomic,strong,readonly) NSArray *mediaItems;
+
++ (NSString *) instagramClientId;
 
 -(void) removeMediaItemsAtIndex:(NSUInteger)index;
 

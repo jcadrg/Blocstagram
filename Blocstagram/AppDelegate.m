@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "ImagesTableViewController.h"
+#import "LoginViewController.h"
+#import "DataSource.h"
 
 @interface AppDelegate ()
 
@@ -18,9 +20,23 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[ImagesTableViewController alloc]init]];
+    //self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[ImagesTableViewController alloc]init]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
+    
+    
+    [DataSource sharedInstance]; // create the data source when receiving the access token
+    
+    UINavigationController *navVC = [[UINavigationController alloc] init];
+    LoginViewController *loginVC = [[LoginViewController alloc] init];
+    [navVC setViewControllers:@[loginVC] animated:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:LoginViewControllerDidGetAccessTokenNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+        ImagesTableViewController *imagesVC = [[ImagesTableViewController alloc] init];
+        [navVC setViewControllers:@[imagesVC] animated:YES];
+    }];
+    
+    self.window.rootViewController = navVC;
+
     [self.window makeKeyAndVisible];
     return YES;
 }
