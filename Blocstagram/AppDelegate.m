@@ -20,8 +20,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    //self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[ImagesTableViewController alloc]init]];
-    // Override point for customization after application launch.
+        // Override point for customization after application launch.
     
     
     [DataSource sharedInstance]; // create the data source when receiving the access token

@@ -12,6 +12,7 @@
 @interface LoginViewController ()<UIWebViewDelegate>
 
 @property (nonatomic, weak) UIWebView *webView;
+@property (nonatomic, strong) UIBarButtonItem *backBarButtonItem;
 
 @end
 
@@ -19,15 +20,22 @@
 
 NSString *const LoginViewControllerDidGetAccessTokenNotification = @"LoginViewControllerDidGetAccessTokenNotification";
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
+
+- (void)loadView {
     UIWebView *webView = [[UIWebView alloc] init];
     webView.delegate = self;
     
-    [self.view addSubview:webView];
     self.webView = webView;
+    self.view = webView;
+}
+
+
+
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
     
     self.title = NSLocalizedString(@"Login", @"Login");
     
@@ -35,7 +43,7 @@ NSString *const LoginViewControllerDidGetAccessTokenNotification = @"LoginViewCo
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed:)];
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
-    NSString *urlString = [NSString stringWithFormat:@"https://instagram.com/oauth/authorize/?client_id=%@&redirect_uri=%@&response_type=token", [DataSource instagramClientId], [self redirectURI]];
+    NSString *urlString = [NSString stringWithFormat:@"https://instagram.com/oauth/authorize/?client_id=%@&redirect_uri=%@&response_type=token", [DataSource instagramClientID], [self redirectURI]];
     NSURL *url = [NSURL URLWithString:urlString];
     
     if (url) {

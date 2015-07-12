@@ -122,17 +122,19 @@
 				5D9276EA1B3B5E4F00F3EA28 /* AppDelegate.h */,
 				5D9276EB1B3B5E4F00F3EA28 /* AppDelegate.m */,
 				5D99CE5C1B3CBF43008CEA58 /* User.h */,
+				5D99CE5D1B3CBF43008CEA58 /* User.m */,
 				5D99CE5F1B3CC57D008CEA58 /* Media.h */,
+				5D99CE601B3CC57E008CEA58 /* Media.m */,
 				5D99CE621B3CC9D4008CEA58 /* Comment.h */,
 				5D99CE631B3CC9D4008CEA58 /* Comment.m */,
 				5D91F3FF1B4F3E4A00385E0B /* LoginViewController.h */,
 				5D91F4001B4F3E4A00385E0B /* LoginViewController.m */,
 				5D99CE651B3CCCB5008CEA58 /* DataSource.h */,
 				5D99CE661B3CCCB5008CEA58 /* DataSource.m */,
-				5D99CE601B3CC57E008CEA58 /* Media.m */,
-				5D99CE5D1B3CBF43008CEA58 /* User.m */,
 				5DCF85151B4213AE00B4722E /* MediaTableViewCell.h */,
 				5DCF85161B4213AE00B4722E /* MediaTableViewCell.m */,
+				5D9277411B3B69A500F3EA28 /* ImagesTableViewController.h */,
+				5D9277421B3B69A500F3EA28 /* ImagesTableViewController.m */,
 				5D9276F31B3B5E4F00F3EA28 /* Images.xcassets */,
 				5D9276E61B3B5E4F00F3EA28 /* Supporting Files */,
 			);
@@ -144,8 +146,6 @@
 			children = (
 				5D9276E71B3B5E4F00F3EA28 /* Info.plist */,
 				5D9276E81B3B5E4F00F3EA28 /* main.m */,
-				5D9277411B3B69A500F3EA28 /* ImagesTableViewController.h */,
-				5D9277421B3B69A500F3EA28 /* ImagesTableViewController.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";

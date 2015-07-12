@@ -23,12 +23,12 @@ typedef void (^NewItemCompletionBlock)(NSError *error);
 @property (nonatomic, strong, readonly) NSString *accessToken;
 @property (nonatomic,strong,readonly) NSArray *mediaItems;
 
-+ (NSString *) instagramClientId;
 
--(void) removeMediaItemsAtIndex:(NSUInteger)index;
+
++ (NSString *) instagramClientID;
+
 
 -(void) deleteMediaItem:(Media *)item;
-
 -(void) requestNewItemsWithCompletionHandler:(NewItemCompletionBlock)completionHandler;
 -(void) requestOldItemsWithCompletionHandler:(NewItemCompletionBlock)completionHandler;
 
