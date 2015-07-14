@@ -11,6 +11,7 @@
 #import "Media.h"
 #import "Comment.h"
 #import "LoginViewController.h"
+#import <UICKeyChainStore.h>
 
 
 @interface DataSource() {
@@ -45,7 +46,40 @@
     self = [super init];
     
     if (self) {
-        [self registerForAccessTokenNotification];
+        //[self registerForAccessTokenNotification];
+        
+        //Check for the token. Register it if it's not there, or jump straight to data population if it is
+        self.accessToken = [UICKeyChainStore stringForKey:@"access token"];
+        
+        if (!self.accessToken) {
+            
+            [self registerForAccessTokenNotification];
+            
+        }else{
+            //[self populateDataWithParameters:nil completionHandler:nil];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSString *fullPath =[self pathForFileName:NSStringFromSelector(@selector(mediaItems))];
+                NSArray *storedMediaItems = [NSKeyedUnarchiver unarchiveObjectWithFile:fullPath];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if(storedMediaItems.count>0){
+                        NSMutableArray *mutableMediaItems = [storedMediaItems mutableCopy];
+                        
+                        [self willChangeValueForKey:@"mediaItems"];
+                        self.mediaItems= mutableMediaItems;
+                        [self didChangeValueForKey:@"mediaItems"];
+                        
+                        for(Media* mediaItem in self.mediaItems){
+                            [self downloadImageForMediaItem:mediaItem];
+                        }
+                        
+                        
+                    }else{
+                        [self populateDataWithParameters:nil completionHandler:nil];
+                    }
+                });
+            });
+        }
     }
     
     return self;
@@ -54,6 +88,10 @@
 - (void) registerForAccessTokenNotification {
     [[NSNotificationCenter defaultCenter] addObserverForName:LoginViewControllerDidGetAccessTokenNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         self.accessToken = note.object;
+        
+        //saving the access token
+        [UICKeyChainStore setString:self.accessToken forKey:@"access token"];
+        
         [self populateDataWithParameters:nil completionHandler:nil];
     }];
 }
@@ -137,11 +175,32 @@
         self.mediaItems = tmpMediaItems;
         [self didChangeValueForKey:@"mediaItems"];
     }
+    
+    [self saveImages];
+}
+
+-(void) saveImages{
+    if (self.mediaItems.count > 0) {
+        //write the changes to disk
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+            NSUInteger numberOfItemsToSave = MIN(self.mediaItems.count, 50);
+            NSArray *mediaItemsToSave = [self.mediaItems subarrayWithRange:NSMakeRange(0, numberOfItemsToSave)];
+            
+            NSString *fullPath = [self pathForFileName:NSStringFromSelector(@selector(mediaItems))];
+            NSData *mediaItemData = [NSKeyedArchiver archivedDataWithRootObject:mediaItemsToSave];
+            
+            NSError *dataError;
+            BOOL wroteSuccesfully = [mediaItemData writeToFile:fullPath options:NSDataWritingAtomic |NSDataWritingFileProtectionCompleteUnlessOpen error:&dataError];
+            if (!wroteSuccesfully) {
+                NSLog(@"Couldn't write file : %@",dataError);
+            }
+        });
+    }
 }
 
 - (void) downloadImageForMediaItem:(Media *)mediaItem {
     if (mediaItem.mediaURL && !mediaItem.image) {
-        NSLog(@"Got to downloadImageForMediaItem, post-if");
+        NSLog(@"Got to downloadImageForMediaItem");
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSURLRequest *request = [NSURLRequest requestWithURL:mediaItem.mediaURL];
             
@@ -165,6 +224,8 @@
             } else {
                 NSLog(@"Error downloading image: %@", error);
             }
+            
+            [self saveImages];
         });
     }
 }
@@ -242,4 +303,16 @@
     NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"mediaItems"];
     [mutableArrayWithKVO removeObject:item];
 }
+
+#pragma mark - NSKeyedArchive
+
+-(NSString *) pathForFileName:(NSString *) filename{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *dataPath = [documentsDirectory stringByAppendingString:filename];
+    
+    
+    return dataPath;
+}
+
 @end

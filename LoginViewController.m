@@ -21,23 +21,18 @@
 NSString *const LoginViewControllerDidGetAccessTokenNotification = @"LoginViewControllerDidGetAccessTokenNotification";
 
 
-- (void)loadView {
-    UIWebView *webView = [[UIWebView alloc] init];
-    webView.delegate = self;
-    
-    self.webView = webView;
-    self.view = webView;
-}
-
-
-
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    UIWebView *webView = [[UIWebView alloc] init];
+    webView.delegate   = self;
+    
     self.title = NSLocalizedString(@"Login", @"Login");
+    
+    [self.view addSubview:webView];
+    self.webView = webView;
     
     //create the back button in the navigation bar
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed:)];
@@ -109,10 +104,12 @@ NSString *const LoginViewControllerDidGetAccessTokenNotification = @"LoginViewCo
 - (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     NSString *urlString = request.URL.absoluteString;
     if ([urlString hasPrefix:[self redirectURI]]) {
-        // This contains our auth token
+
         NSRange rangeOfAccessTokenParameter = [urlString rangeOfString:@"access_token="];
         NSUInteger indexOfTokenStarting = rangeOfAccessTokenParameter.location + rangeOfAccessTokenParameter.length;
+        
         NSString *accessToken = [urlString substringFromIndex:indexOfTokenStarting];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:LoginViewControllerDidGetAccessTokenNotification object:accessToken];
         
         return NO;
