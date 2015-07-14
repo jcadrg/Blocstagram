@@ -219,13 +219,16 @@
                         NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"mediaItems"];
                         NSUInteger index = [mutableArrayWithKVO indexOfObject:mediaItem];
                         [mutableArrayWithKVO replaceObjectAtIndex:index withObject:mediaItem];
+                        
+                        
                     });
+                    [self saveImages];
                 }
             } else {
                 NSLog(@"Error downloading image: %@", error);
             }
             
-            [self saveImages];
+            
         });
     }
 }
