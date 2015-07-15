@@ -197,7 +197,7 @@
     
     [self presentViewController:fullScreenVC animated:YES completion:nil];
 }
-
+//Brings the activityViewController after the longPress on the Image View
 -(void) cell:(MediaTableViewCell *)cell didLongPressImageView:(UIImageView *)imageView{
     NSMutableArray *itemsToShare = [NSMutableArray array];
     

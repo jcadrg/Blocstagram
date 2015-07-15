@@ -30,8 +30,8 @@
         CGRect startFrame = [transitionContext.containerView convertRect:self.cellImageView.bounds fromView:self.cellImageView]; //#15
         CGRect endFrame = fromViewController.view.frame; //#16
         
-        toViewController.view.frame = startFrame;//#17
-        fullScreenVC.imageView.frame = toViewController.view.bounds;//#18
+        toViewController.view.frame = startFrame;//#17 The full screen view controller will start directly over the tapped image
+        fullScreenVC.imageView.frame = toViewController.view.bounds;//#18 the image view's frame will fill the full screen view controller's frame completely
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
             fromViewController.view.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;

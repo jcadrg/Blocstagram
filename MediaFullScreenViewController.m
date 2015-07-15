@@ -14,6 +14,7 @@
 @property(nonatomic,strong) Media *media;
 @property(nonatomic, strong) UITapGestureRecognizer *tap;
 @property(nonatomic,strong) UITapGestureRecognizer *doubleTap;
+@property(nonatomic,strong) UIButton *shareButton;
 
 @end
 
@@ -61,10 +62,25 @@
     [self.scrollView addGestureRecognizer:self.tap];
     [self.scrollView addGestureRecognizer:self.doubleTap];
     
+    self.shareButton =[UIButton buttonWithType:UIButtonTypeSystem];
+    self.shareButton.backgroundColor = [UIColor whiteColor];
+    self.shareButton.layer.cornerRadius=5;
+    
+    [self.shareButton setTitle:@"Share" forState:UIControlStateNormal];
+    [self.shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.view addSubview:self.shareButton];
+    [self.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
+    
 }
 
 -(void) viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
+    
+    [self.shareButton.titleLabel sizeToFit];
+    CGSize shareButtonTitleLabelSize = self.shareButton.titleLabel.frame.size;
+    
+    self.shareButton.frame = CGRectMake(CGRectGetWidth(self.view.bounds)-shareButtonTitleLabelSize.width-40,40, shareButtonTitleLabelSize.width+20, shareButtonTitleLabelSize.height+10);
+    
     
     //#4
     self.scrollView.frame = self.view.bounds;
@@ -81,7 +97,7 @@
     self.scrollView.maximumZoomScale = 1;
     
 }
-#pragma mark - UIScrollDelegate
+#pragma mark - UIScrollViewDelegate
 //#6
 -(UIView *) viewForZoomingInScrollView:(UIScrollView *)scrollView{
     return self.imageView;
@@ -156,6 +172,27 @@
         [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
     }
 }
+
+#pragma mark - Sharing
+
+-(void) share{
+    NSMutableArray *itemsToShare = [NSMutableArray array];
+    
+    if (self.media.caption>0) {
+        [itemsToShare addObject:self.media.caption];
+    }
+    
+    if (self.media.image) {
+        [itemsToShare addObject:self.media.image];
+    }
+    
+    if (itemsToShare.count>0) {
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare applicationActivities:nil];
+        [self presentViewController:activityVC animated:YES completion:nil];
+    }
+}
+
+
 
 /*
 #pragma mark - Navigation
