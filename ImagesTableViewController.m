@@ -12,8 +12,12 @@
 #import "User.h"
 #import "Comment.h"
 #import "MediaTableViewCell.h"
+#import "MediaFullScreenViewController.h"
+#import "MediaFullScreenAnimator.h"
 
-@interface ImagesTableViewController ()
+@interface ImagesTableViewController ()<MediaTableViewCellDelegate,UIViewControllerTransitioningDelegate>
+
+@property(nonatomic,weak) UIImageView *lastTappedImageView;
 
 @end
 
@@ -52,6 +56,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     MediaTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"mediaCell" forIndexPath:indexPath];
+    
+    //Checkpoint 36: when a cell is created (or deqeue'd) set its delegate
+    cell.delegate = self;
+    
     cell.mediaItem = [DataSource sharedInstance].mediaItems[indexPath.row];
     
     return cell;
@@ -175,4 +183,58 @@
 - (void) dealloc {
     [[DataSource sharedInstance] removeObserver:self forKeyPath:@"mediaItems"];
 }
+
+
+//Implementation of the delegate method
+//Set lastTappedImageView when an image view is tapped, and let iOS know that this transition uses a delegate
+-(void) cell:(MediaTableViewCell *)cell didTapImageView:(UIImageView *)imageView{
+    self.lastTappedImageView = imageView;
+    
+    MediaFullScreenViewController *fullScreenVC = [[MediaFullScreenViewController alloc] initWithMedia:cell.mediaItem];
+    
+    fullScreenVC.transitioningDelegate = self;
+    fullScreenVC.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [self presentViewController:fullScreenVC animated:YES completion:nil];
+}
+
+-(void) cell:(MediaTableViewCell *)cell didLongPressImageView:(UIImageView *)imageView{
+    NSMutableArray *itemsToShare = [NSMutableArray array];
+    
+    if (cell.mediaItem.caption>0) {
+        [itemsToShare addObject:cell.mediaItem.caption];
+    }
+    
+    if (cell.mediaItem.image) {
+        [itemsToShare addObject:cell.mediaItem.image];
+    }
+    
+    if (itemsToShare.count>0) {
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare applicationActivities:nil];
+        [self presentViewController:activityVC animated:YES completion:nil];
+    }
+}
+
+
+#pragma mark - UIViewControllerTransitioningDelegate
+
+-(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source{
+    
+    MediaFullScreenAnimator *animator = [[MediaFullScreenAnimator alloc] init];
+    animator.presenting = YES;
+    animator.cellImageView = self.lastTappedImageView;
+    return animator;
+    
+}
+
+-(id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed{
+    MediaFullScreenAnimator *animator =[[MediaFullScreenAnimator alloc]init];
+    animator.cellImageView = self.lastTappedImageView;
+    return animator;
+    
+}
+    
+
+
+
 @end

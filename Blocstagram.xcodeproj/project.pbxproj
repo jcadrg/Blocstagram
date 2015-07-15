@@ -29,6 +29,8 @@
 		5D99CE641B3CC9D4008CEA58 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D99CE631B3CC9D4008CEA58 /* Comment.m */; };
 		5D99CE671B3CCCB5008CEA58 /* DataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D99CE661B3CCCB5008CEA58 /* DataSource.m */; };
 		5DCF85171B4213AE00B4722E /* MediaTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DCF85161B4213AE00B4722E /* MediaTableViewCell.m */; };
+		5DE8D5761B54ECBD000E1363 /* MediaFullScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8D5751B54ECBD000E1363 /* MediaFullScreenViewController.m */; };
+		5DE8D5791B5611FF000E1363 /* MediaFullScreenAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8D5781B5611FF000E1363 /* MediaFullScreenAnimator.m */; };
 		C2CDAE905F5F6A1D4B8834E7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA341C9927FEB70EFF15C31 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +80,10 @@
 		5D99CE661B3CCCB5008CEA58 /* DataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSource.m; sourceTree = SOURCE_ROOT; };
 		5DCF85151B4213AE00B4722E /* MediaTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MediaTableViewCell.h; path = ../MediaTableViewCell.h; sourceTree = "<group>"; };
 		5DCF85161B4213AE00B4722E /* MediaTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MediaTableViewCell.m; path = ../MediaTableViewCell.m; sourceTree = "<group>"; };
+		5DE8D5741B54ECBD000E1363 /* MediaFullScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaFullScreenViewController.h; sourceTree = SOURCE_ROOT; };
+		5DE8D5751B54ECBD000E1363 /* MediaFullScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaFullScreenViewController.m; sourceTree = SOURCE_ROOT; };
+		5DE8D5771B5611FF000E1363 /* MediaFullScreenAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaFullScreenAnimator.h; sourceTree = SOURCE_ROOT; };
+		5DE8D5781B5611FF000E1363 /* MediaFullScreenAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaFullScreenAnimator.m; sourceTree = SOURCE_ROOT; };
 		A791D3CAF37372FE56757C75 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B71F98838223DC8F0AF870A9 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,8 +146,12 @@
 				5D99CE661B3CCCB5008CEA58 /* DataSource.m */,
 				5DCF85151B4213AE00B4722E /* MediaTableViewCell.h */,
 				5DCF85161B4213AE00B4722E /* MediaTableViewCell.m */,
+				5DE8D5741B54ECBD000E1363 /* MediaFullScreenViewController.h */,
+				5DE8D5751B54ECBD000E1363 /* MediaFullScreenViewController.m */,
 				5D9277411B3B69A500F3EA28 /* ImagesTableViewController.h */,
 				5D9277421B3B69A500F3EA28 /* ImagesTableViewController.m */,
+				5DE8D5771B5611FF000E1363 /* MediaFullScreenAnimator.h */,
+				5DE8D5781B5611FF000E1363 /* MediaFullScreenAnimator.m */,
 				5D9276F31B3B5E4F00F3EA28 /* Images.xcassets */,
 				5D9276E61B3B5E4F00F3EA28 /* Supporting Files */,
 			);
@@ -352,9 +362,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5DE8D5761B54ECBD000E1363 /* MediaFullScreenViewController.m in Sources */,
 				5D99CE5E1B3CBF43008CEA58 /* User.m in Sources */,
 				5D99CE641B3CC9D4008CEA58 /* Comment.m in Sources */,
 				5DCF85171B4213AE00B4722E /* MediaTableViewCell.m in Sources */,
+				5DE8D5791B5611FF000E1363 /* MediaFullScreenAnimator.m in Sources */,
 				5D99CE611B3CC57E008CEA58 /* Media.m in Sources */,
 				5D9276EC1B3B5E4F00F3EA28 /* AppDelegate.m in Sources */,
 				5D91F4011B4F3E4A00385E0B /* LoginViewController.m in Sources */,
