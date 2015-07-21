@@ -76,6 +76,16 @@
     }
 }
 
+-(void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    if ([scrollView decelerationRate] < UIScrollViewDecelerationRateNormal) {
+        NSArray *visibleIndexPath = [self.tableView indexPathsForVisibleRows];
+        for (NSIndexPath *indexPath in visibleIndexPath) {
+            Media *mediaItem =[DataSource sharedInstance].mediaItems[indexPath.row];
+            [[DataSource sharedInstance] downloadImageForMediaItem:mediaItem];
+        }
+    }
+}
+
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Media *item = [DataSource sharedInstance].mediaItems[indexPath.row];
     return [MediaTableViewCell heightForMediaItem:item width:CGRectGetWidth(self.view.frame)];
