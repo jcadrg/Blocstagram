@@ -12,6 +12,7 @@
 #import "Comment.h"
 #import "LoginViewController.h"
 #import <UICKeyChainStore.h>
+#import <AFNetworking.h>
 
 
 @interface DataSource() {
@@ -23,6 +24,7 @@
 @property (nonatomic, assign) BOOL isLoadinOlderItems;
 @property (nonatomic, assign) BOOL thereAreNoMoreOlderMessages;
 @property (nonatomic, strong) NSString *accessToken;
+@property (nonatomic, strong) AFHTTPRequestOperationManager *instagramOperationManager;
 
 @end
 
@@ -46,6 +48,8 @@
     self = [super init];
     
     if (self) {
+        
+        [self createOperationManager];
         //[self registerForAccessTokenNotification];
         
         //Check for the token. Register it if it's not there, or jump straight to data population if it is
@@ -69,9 +73,9 @@
                         self.mediaItems= mutableMediaItems;
                         [self didChangeValueForKey:@"mediaItems"];
                         
-                        for(Media* mediaItem in self.mediaItems){
+                        /*for(Media* mediaItem in self.mediaItems){
                             [self downloadImageForMediaItem:mediaItem];
-                        }
+                        }*/
                         
                         
                     }else{
@@ -98,7 +102,7 @@
 
 - (void) populateDataWithParameters:(NSDictionary *)parameters completionHandler:(NewItemCompletionBlock)completionHandler {
     if (self.accessToken) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        /*dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             NSMutableString *urlString = [NSMutableString stringWithFormat:@"https://api.instagram.com/v1/users/self/feed?access_token=%@", self.accessToken];
             for (NSString *parameterName in parameters) {
                 [urlString appendFormat:@"&%@=%@", parameterName, parameters[parameterName]];
@@ -138,7 +142,26 @@
                     });
                 }
             }
-        });
+        });*/
+        NSMutableDictionary *mutableParameters = [@{@"access_token": self.accessToken} mutableCopy];
+        
+        [mutableParameters addEntriesFromDictionary:parameters];
+        
+        [self.instagramOperationManager GET:@"users/self/feed"
+                                 parameters:mutableParameters
+                                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                                            [self parseDataFromFeedDictionary:responseObject fromRequestWithParameters:parameters];
+                                        }
+                                        
+                                        if (completionHandler) {
+                                            completionHandler(nil);
+                                        }
+                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                        if (completionHandler) {
+                                            completionHandler(error);
+                                        }
+        }];
     }
 }
 
@@ -152,7 +175,7 @@
         
         if (mediaItem) {
             [tmpMediaItems addObject:mediaItem];
-            [self downloadImageForMediaItem:mediaItem];
+            //[self downloadImageForMediaItem:mediaItem];
         }
     }
     
@@ -201,7 +224,10 @@
 - (void) downloadImageForMediaItem:(Media *)mediaItem {
     if (mediaItem.mediaURL && !mediaItem.image) {
         NSLog(@"Got to downloadImageForMediaItem");
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        mediaItem.downloadState = MediaDownloadStateDownloadInProgress;
+        
+        /*dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSURLRequest *request = [NSURLRequest requestWithURL:mediaItem.mediaURL];
             
             NSURLResponse *response;
@@ -226,7 +252,50 @@
             }
             
             [self saveImages];
-        });
+        });*/
+        [self.instagramOperationManager GET:mediaItem.mediaURL.absoluteString parameters:nil
+        success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        if ([responseObject isKindOfClass:[UIImage class]]) {
+            mediaItem.image = responseObject;
+            
+            mediaItem.downloadState = MediaDownloadStateHasImage;
+            
+            NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"mediaItems"];
+            NSUInteger index = [mutableArrayWithKVO indexOfObject:mediaItem];
+            [mutableArrayWithKVO replaceObjectAtIndex:index withObject:mediaItem];
+            
+            [self saveImages];
+        }else{
+            mediaItem.downloadState = MediaDownloadStateNonRecoverableError;
+        }
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error downloading image: %@", error);
+        
+        mediaItem.downloadState = MediaDownloadStateNonRecoverableError;
+        
+        if([error.domain isEqualToString:NSURLErrorDomain]){
+            
+            //A networking problem
+            
+            if (error.code == NSURLErrorTimedOut ||
+                error.code == NSURLErrorCancelled ||
+                error.code == NSURLErrorCannotConnectToHost ||
+                error.code == NSURLErrorNetworkConnectionLost ||
+                error.code == NSURLErrorNotConnectedToInternet ||
+                error.code == kCFURLErrorInternationalRoamingOff ||
+                error.code == kCFURLErrorCallIsActive ||
+                error.code == kCFURLErrorDataNotAllowed ||
+                error.code == kCFURLErrorRequestBodyStreamExhausted) {
+                
+                //It might work if we try again
+                mediaItem.downloadState = MediaDownloadStateNeedsImage;
+            }
+        }
+    }];
     }
 }
 
@@ -313,6 +382,20 @@
     
     
     return dataPath;
+}
+
+
+- (void) createOperationManager {
+    NSURL *baseURL = [NSURL URLWithString:@"https://api.instagram.com/v1/"];
+    self.instagramOperationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
+    
+    AFJSONResponseSerializer *jsonSerializer = [AFJSONResponseSerializer serializer];
+    
+    AFImageResponseSerializer *imageSerializer = [AFImageResponseSerializer serializer];
+    imageSerializer.imageScale = 1.0;
+    
+    AFCompoundResponseSerializer *serializer = [AFCompoundResponseSerializer compoundSerializerWithResponseSerializers:@[jsonSerializer, imageSerializer]];
+    self.instagramOperationManager.responseSerializer = serializer;
 }
 
 @end
