@@ -384,7 +384,6 @@
     return dataPath;
 }
 
-
 - (void) createOperationManager {
     NSURL *baseURL = [NSURL URLWithString:@"https://api.instagram.com/v1/"];
     self.instagramOperationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
@@ -396,6 +395,51 @@
     
     AFCompoundResponseSerializer *serializer = [AFCompoundResponseSerializer compoundSerializerWithResponseSerializers:@[jsonSerializer, imageSerializer]];
     self.instagramOperationManager.responseSerializer = serializer;
+}
+
+-(void) toggleLikeOnMediaItem:(Media *)mediaItem withCompletionHandler:(void (^)(void))completionHandler{
+    NSString *urlString = [NSString stringWithFormat:@"media/%@/likes", mediaItem.idNumber];
+    NSDictionary *parameters = @{@"access_token": self.accessToken};
+    
+    if (mediaItem.likeState == LikeStateNotLiked) {
+        
+        mediaItem.likeState = LikeStateLiking;
+        
+        //we send a POST request to the URL generated at the top of the method(urlstring)
+        [self.instagramOperationManager POST:urlString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject){
+            
+            mediaItem.likeState =LikeStateLiked;
+            
+            if (completionHandler) {
+                completionHandler();
+            }
+        }failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            mediaItem.likeState = LikeStateNotLiked;
+            
+            if (completionHandler) {
+                completionHandler();
+            }
+        }];
+    }else if(mediaItem.likeState == LikeStateLiked){
+        
+        mediaItem.likeState = LikeStateUnliking;
+        
+        [self.instagramOperationManager DELETE:urlString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject){
+            mediaItem.likeState = LikeStateLiked;
+            
+            if(completionHandler){
+                completionHandler();
+            }
+        }failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            mediaItem.likeState = LikeStateLiked;
+            
+            if(completionHandler){
+                completionHandler();
+            }
+            
+            
+        }];
+    }
 }
 
 @end
