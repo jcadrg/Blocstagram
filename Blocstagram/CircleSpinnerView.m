@@ -84,8 +84,8 @@
         animationGroup.timingFunction = linearCurve;
         
         CABasicAnimation *strokeStartAnimation =[CABasicAnimation animationWithKeyPath:@"strokeStart"];
-        strokeStartAnimation.fromValue = @0.015;
-        strokeStartAnimation.toValue = @0.515;
+        strokeStartAnimation.fromValue = @0.115;
+        strokeStartAnimation.toValue = @0.415;
         
         CABasicAnimation *strokeEndAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
         strokeEndAnimation.fromValue = @0.485;
