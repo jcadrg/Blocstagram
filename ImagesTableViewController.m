@@ -14,8 +14,9 @@
 #import "MediaTableViewCell.h"
 #import "MediaFullScreenViewController.h"
 #import "MediaFullScreenAnimator.h"
+#import "CameraViewController.h"
 
-@interface ImagesTableViewController ()<MediaTableViewCellDelegate,UIViewControllerTransitioningDelegate>
+@interface ImagesTableViewController ()<MediaTableViewCellDelegate,UIViewControllerTransitioningDelegate,CameraViewControllerDelegate>
 
 @property(nonatomic,weak) UIImageView *lastTappedImageView;
 @property(nonatomic, weak) UIView *lastSelectedCommentView;
@@ -49,6 +50,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    //check if any photo capabilities at all are available, and if so, add a camera button:
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] ||[UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
+        UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraPressed:)];
+        self.navigationItem.rightBarButtonItem=cameraButton;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -367,5 +375,24 @@
     }completion:nil];
 }
 
+#pragma mark - Camera and CameraViewControllerDelegate
+
+-(void) cameraPressed:(UIBarButtonItem *) sender{
+    CameraViewController *cameraVC =[[CameraViewController alloc] init];
+    cameraVC.delegate = self;
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:cameraVC];
+    [self presentViewController:nav animated:YES completion:nil];
+    return;
+}
+
+-(void) cameraViewController:(CameraViewController *)cameraViewController didCompletewithImage:(UIImage *)image{
+    [cameraViewController dismissViewControllerAnimated:YES completion:^{
+        if (image) {
+            NSLog(@"Got an image!");
+        }else{
+            NSLog(@"Closed without and image.");
+        }
+    }];
+}
 
 @end
