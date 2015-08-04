@@ -11,7 +11,7 @@
 
 @interface MediaFullScreenViewController ()<UIScrollViewDelegate>
 
-@property(nonatomic,strong) Media *media;
+
 @property(nonatomic, strong) UITapGestureRecognizer *tap;
 @property(nonatomic,strong) UITapGestureRecognizer *doubleTap;
 
@@ -69,9 +69,19 @@
     //#4
     self.scrollView.frame = self.view.bounds;
     
+    [self recalculateZoomScale];
+}
+    
+-(void) recalculateZoomScale{
     //#5
     CGSize scrollViewFrameSize = self.scrollView.frame.size;
     CGSize scrollViewContentSize = self.scrollView.contentSize;
+    
+    
+    //This allows subclasses to recalculate the zoom scale for scroll views that are zoomed out.
+    
+    scrollViewContentSize.height /=self.scrollView.zoomScale;
+    scrollViewContentSize.width /=self.scrollView.zoomScale;
     
     CGFloat scaleWidth =scrollViewFrameSize.width / scrollViewContentSize.width;
     CGFloat scaleHeight = scrollViewFrameSize.height / scrollViewContentSize.height;
@@ -80,7 +90,9 @@
     self.scrollView.minimumZoomScale = minScale;
     self.scrollView.maximumZoomScale = 1;
     
+    
 }
+
 #pragma mark - UIScrollDelegate
 //#6
 -(UIView *) viewForZoomingInScrollView:(UIScrollView *)scrollView{
@@ -156,6 +168,8 @@
         [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
     }
 }
+
+
 
 /*
 #pragma mark - Navigation

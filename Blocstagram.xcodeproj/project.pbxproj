@@ -25,6 +25,9 @@
 		5D9277391B3B68EE00F3EA28 /* 5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D9277371B3B68EE00F3EA28 /* 5.jpg */; };
 		5D92773A1B3B68EE00F3EA28 /* 6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D9277381B3B68EE00F3EA28 /* 6.jpg */; };
 		5D9277431B3B69A500F3EA28 /* ImagesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9277421B3B69A500F3EA28 /* ImagesTableViewController.m */; };
+		5D99898C1B69710200B14787 /* CropBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D99898B1B69710200B14787 /* CropBox.m */; };
+		5D99898F1B69A0AE00B14787 /* CropImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D99898E1B69A0AE00B14787 /* CropImageViewController.m */; };
+		5D9989921B69C24800B14787 /* ImageLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9989911B69C24800B14787 /* ImageLibraryViewController.m */; };
 		5D99CE5E1B3CBF43008CEA58 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D99CE5D1B3CBF43008CEA58 /* User.m */; };
 		5D99CE611B3CC57E008CEA58 /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D99CE601B3CC57E008CEA58 /* Media.m */; };
 		5D99CE641B3CC9D4008CEA58 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D99CE631B3CC9D4008CEA58 /* Comment.m */; };
@@ -78,6 +81,12 @@
 		5D9277381B3B68EE00F3EA28 /* 6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6.jpg; sourceTree = "<group>"; };
 		5D9277411B3B69A500F3EA28 /* ImagesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImagesTableViewController.h; path = ../ImagesTableViewController.h; sourceTree = "<group>"; };
 		5D9277421B3B69A500F3EA28 /* ImagesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImagesTableViewController.m; path = ../ImagesTableViewController.m; sourceTree = "<group>"; };
+		5D99898A1B69710200B14787 /* CropBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CropBox.h; sourceTree = "<group>"; };
+		5D99898B1B69710200B14787 /* CropBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CropBox.m; sourceTree = "<group>"; };
+		5D99898D1B69A0AE00B14787 /* CropImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CropImageViewController.h; sourceTree = "<group>"; };
+		5D99898E1B69A0AE00B14787 /* CropImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CropImageViewController.m; sourceTree = "<group>"; };
+		5D9989901B69C24800B14787 /* ImageLibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLibraryViewController.h; sourceTree = "<group>"; };
+		5D9989911B69C24800B14787 /* ImageLibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageLibraryViewController.m; sourceTree = "<group>"; };
 		5D99CE5C1B3CBF43008CEA58 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = SOURCE_ROOT; };
 		5D99CE5D1B3CBF43008CEA58 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = SOURCE_ROOT; };
 		5D99CE5F1B3CC57D008CEA58 /* Media.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Media.h; sourceTree = SOURCE_ROOT; };
@@ -172,6 +181,10 @@
 				5DB732A11B6150B600583B16 /* ComposeCommentView.m */,
 				5DE8D5741B54ECBD000E1363 /* MediaFullScreenViewController.h */,
 				5DE8D5751B54ECBD000E1363 /* MediaFullScreenViewController.m */,
+				5D99898D1B69A0AE00B14787 /* CropImageViewController.h */,
+				5D99898E1B69A0AE00B14787 /* CropImageViewController.m */,
+				5D9989901B69C24800B14787 /* ImageLibraryViewController.h */,
+				5D9989911B69C24800B14787 /* ImageLibraryViewController.m */,
 				5D9277411B3B69A500F3EA28 /* ImagesTableViewController.h */,
 				5D9277421B3B69A500F3EA28 /* ImagesTableViewController.m */,
 				5DE8D5771B5611FF000E1363 /* MediaFullScreenAnimator.h */,
@@ -180,6 +193,8 @@
 				5DB732A41B63659100583B16 /* CameraToolBar.m */,
 				5D4CCB1B1B6577AD00780C7F /* CameraViewController.h */,
 				5D4CCB1C1B6577AD00780C7F /* CameraViewController.m */,
+				5D99898A1B69710200B14787 /* CropBox.h */,
+				5D99898B1B69710200B14787 /* CropBox.m */,
 				5D9E66AF1B67125E00EC8D60 /* UIImage+ImageUtilities.h */,
 				5D9E66B01B67125E00EC8D60 /* UIImage+ImageUtilities.m */,
 				5D9276F31B3B5E4F00F3EA28 /* Images.xcassets */,
@@ -393,17 +408,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				5DE8D5761B54ECBD000E1363 /* MediaFullScreenViewController.m in Sources */,
+				5D99898F1B69A0AE00B14787 /* CropImageViewController.m in Sources */,
 				5D99CE5E1B3CBF43008CEA58 /* User.m in Sources */,
 				5D99CE641B3CC9D4008CEA58 /* Comment.m in Sources */,
 				5DCF85171B4213AE00B4722E /* MediaTableViewCell.m in Sources */,
 				5DE8D5791B5611FF000E1363 /* MediaFullScreenAnimator.m in Sources */,
 				5D99CE611B3CC57E008CEA58 /* Media.m in Sources */,
 				5DB732A51B63659100583B16 /* CameraToolBar.m in Sources */,
+				5D99898C1B69710200B14787 /* CropBox.m in Sources */,
 				5D9276EC1B3B5E4F00F3EA28 /* AppDelegate.m in Sources */,
 				5D91F4011B4F3E4A00385E0B /* LoginViewController.m in Sources */,
 				5D4CCB1D1B6577AD00780C7F /* CameraViewController.m in Sources */,
 				5D99CE671B3CCCB5008CEA58 /* DataSource.m in Sources */,
 				5D9276E91B3B5E4F00F3EA28 /* main.m in Sources */,
+				5D9989921B69C24800B14787 /* ImageLibraryViewController.m in Sources */,
 				5D9EC6F21B601EE90009B504 /* LikeButton.m in Sources */,
 				5D9E66B11B67125E00EC8D60 /* UIImage+ImageUtilities.m in Sources */,
 				5DB732A21B6150B600583B16 /* ComposeCommentView.m in Sources */,

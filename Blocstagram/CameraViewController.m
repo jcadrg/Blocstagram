@@ -10,8 +10,10 @@
 #import <AVFoundation/AVFoundation.h>
 #import "CameraToolBar.h"
 #import "UIImage+ImageUtilities.h"
+#import "CropBox.h"
+#import "ImageLibraryViewController.h"
 
-@interface CameraViewController ()<CameraToolBarDelegate>
+@interface CameraViewController ()<CameraToolBarDelegate, ImageLibraryViewControllerDelegate>
 
 @property(nonatomic, strong) UIView *imagePreview;
 
@@ -19,11 +21,13 @@
 @property(nonatomic, strong) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
 @property(nonatomic, strong) AVCaptureStillImageOutput *stillImageOutput;
 
-@property(nonatomic, strong) NSArray *horizontalLines;
-@property(nonatomic, strong) NSArray *verticalLines;
+/*@property(nonatomic, strong) NSArray *horizontalLines;
+@property(nonatomic, strong) NSArray *verticalLines;*/
+
 @property(nonatomic, strong) UIToolbar *topView;
 @property(nonatomic, strong) UIToolbar *bottomView;
 
+@property (nonatomic, strong) CropBox *cropBox;
 @property(nonatomic, strong) CameraToolBar *cameraToolBar;
 @end
 
@@ -52,6 +56,8 @@
     self.topView = [UIToolbar new];
     self.bottomView = [UIToolbar new];
     
+    self.cropBox = [CropBox new];
+    
     
     
     self.cameraToolBar =[[CameraToolBar alloc] initWithImageNames:@[@"rotate",@"road"]];
@@ -66,9 +72,10 @@
 }
 
 -(void) addViewsToViewHierarchy{
-    NSMutableArray *views =[@[self.imagePreview, self.topView, self.bottomView] mutableCopy];
-    [views addObjectsFromArray:self.horizontalLines];
-    [views addObjectsFromArray:self.verticalLines];
+    NSMutableArray *views =[@[self.imagePreview, self.topView, self.bottomView,self.cropBox] mutableCopy];
+    
+    /*[views addObjectsFromArray:self.horizontalLines];
+    [views addObjectsFromArray:self.verticalLines];*/
     [views addObject:self.cameraToolBar];
     
     for (UIView *view in views) {
@@ -159,7 +166,7 @@
     CGFloat heightOfBottomView = CGRectGetHeight(self.view.frame) - yOriginOfBottomView;
     self.bottomView.frame = CGRectMake(0, yOriginOfBottomView, width, heightOfBottomView);
     
-    CGFloat thirdOfWidth = width/3;
+    /*CGFloat thirdOfWidth = width/3;
     
     for (int i=0; i < 4; i++) {
         UIView *horizontalLine = self.horizontalLines[i];
@@ -174,7 +181,9 @@
         }
         
         verticalLine.frame = verticalFrame;
-    }
+    }*/
+    
+    self.cropBox.frame = CGRectMake(0, CGRectGetMaxY(self.topView.frame), width, width);
     
     self.imagePreview.frame = self.view.bounds;
     self.captureVideoPreviewLayer.frame= self.imagePreview.bounds;
@@ -224,7 +233,10 @@
 }
 //right camera toolbar will open a different view to allow the user to select a photo from their library
 -(void) rightButtonPressedOnToolBar:(CameraToolBar *) toolbar{
-    NSLog(@"Photo library button pressed.");
+    //NSLog(@"Photo library button pressed.");
+    ImageLibraryViewController *imageLibraryVC = [[ImageLibraryViewController alloc]init];
+    imageLibraryVC.delegate = self;
+    [self.navigationController pushViewController:imageLibraryVC animated:YES];
 }
 
 -(void) cameraButtonPressedOnToolBar:(CameraToolBar *)toolbar{
@@ -255,7 +267,7 @@
             image = [image imageResizedToMatchAspectRatioOfSize:self.captureVideoPreviewLayer.bounds.size];
             
             //#12
-            UIView *leftLine = self.verticalLines.firstObject;
+            /*UIView *leftLine = self.verticalLines.firstObject;
             UIView *rightLine = self.verticalLines.lastObject;
             UIView *topLine = self.horizontalLines.firstObject;
             UIView *bottomLine = self.horizontalLines.lastObject;
@@ -263,7 +275,10 @@
             CGRect gridRect = CGRectMake(CGRectGetMinX(leftLine.frame),
                                          CGRectGetMinY(topLine.frame),
                                          CGRectGetMaxX(rightLine.frame) - CGRectGetMinX(leftLine.frame),
-                                         CGRectGetMinY(bottomLine.frame) - CGRectGetMinY(topLine.frame));
+                                         CGRectGetMinY(bottomLine.frame) - CGRectGetMinY(topLine.frame));*/
+            
+            CGRect gridRect = self.cropBox.frame;
+            
             CGRect cropRect = gridRect;
             cropRect.origin.x = (CGRectGetMinX(gridRect) +(image.size.width - CGRectGetWidth(gridRect))/2);
             
@@ -286,6 +301,14 @@
         }
     }];
 
+}
+
+#pragma mark - ImageLibraryViewControllerDelegate
+
+//When the image library controller hands an image back, pass it to the camera controller's delegate:
+
+-(void) imageLibraryViewController:(ImageLibraryViewController *)imageLibraryViewController didCompleteWithImage:(UIImage *)image{
+    [self.delegate cameraViewController:self didCompletewithImage:image];
 }
 
 //Responding to Toolbar Button Taps
