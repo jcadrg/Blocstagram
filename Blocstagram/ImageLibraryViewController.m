@@ -22,7 +22,7 @@
 //UICollectionViewFlowLayout organizes items into a grid with an optional header and footer views for each section
 -(instancetype) init{
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(100, 100);
+    layout.itemSize = CGSizeMake(80, 80);
     
     return [super initWithCollectionViewLayout:layout];
 }
@@ -49,14 +49,14 @@
     [super viewDidLayoutSubviews];
     
     CGFloat width = CGRectGetWidth(self.view.frame);
-    CGFloat minWidth = 100;
+    CGFloat minWidth = 90;
     NSInteger divisor = width / minWidth;
     CGFloat cellSize = width / divisor;
     
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionViewLayout;
-    flowLayout.itemSize = CGSizeMake(cellSize, cellSize);
-    flowLayout.minimumInteritemSpacing =0;
-    flowLayout.minimumLineSpacing =0;
+    flowLayout.itemSize = CGSizeMake(cellSize -5, cellSize -10);
+    flowLayout.minimumInteritemSpacing =5;
+    flowLayout.minimumLineSpacing =5;
 }
 
 
@@ -66,8 +66,9 @@
     //PHFetchOptions describes different options when retrieving an image, we are choosing to sort them by date of creation
     PHFetchOptions *options = [[PHFetchOptions alloc] init];
     options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"CreationDate" ascending:YES]];
+    options.predicate = [NSPredicate predicateWithFormat:@"(mediaType == %d)", PHAssetMediaTypeImage];
     
-    self.result = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:options];
+    self.result = [PHAsset fetchAssetsWithOptions:options];
     
 }
 
@@ -90,7 +91,10 @@
     }
 }
 
+#pragma mark -CollectionView Delegate
+
 -(NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    NSLog(@"Count: %lu",(unsigned long) self.result.count);
     return self.result.count;
 }
 

@@ -24,8 +24,8 @@
 /*@property(nonatomic, strong) NSArray *horizontalLines;
 @property(nonatomic, strong) NSArray *verticalLines;*/
 
-@property(nonatomic, strong) UIToolbar *topView;
-@property(nonatomic, strong) UIToolbar *bottomView;
+/*@property(nonatomic, strong) UIToolbar *topView;
+@property(nonatomic, strong) UIToolbar *bottomView;*/
 
 @property (nonatomic, strong) CropBox *cropBox;
 @property(nonatomic, strong) CameraToolBar *cameraToolBar;
@@ -53,8 +53,8 @@
 -(void) createViews{
     self.imagePreview = [UIView new];
     
-    self.topView = [UIToolbar new];
-    self.bottomView = [UIToolbar new];
+    /*self.topView = [UIToolbar new];
+    self.bottomView = [UIToolbar new];*/
     
     self.cropBox = [CropBox new];
     
@@ -64,15 +64,15 @@
 
     self.cameraToolBar.delegate=self;
     
-    UIColor *whiteBG = [UIColor colorWithWhite:1.0 alpha:.15];
+    /*UIColor *whiteBG = [UIColor colorWithWhite:1.0 alpha:.15];
     self.topView.barTintColor = whiteBG;
     self.bottomView.barTintColor = whiteBG;
     self.topView.alpha = 0.5;
-    self.bottomView.alpha = 0.5;
+    self.bottomView.alpha = 0.5;*/
 }
 
 -(void) addViewsToViewHierarchy{
-    NSMutableArray *views =[@[self.imagePreview, self.topView, self.bottomView,self.cropBox] mutableCopy];
+    NSMutableArray *views =[@[self.imagePreview,self.cropBox] mutableCopy];
     
     /*[views addObjectsFromArray:self.horizontalLines];
     [views addObjectsFromArray:self.verticalLines];*/
@@ -160,30 +160,17 @@
     [super viewWillLayoutSubviews];
     
     CGFloat width = CGRectGetWidth(self.view.bounds);
-    self.topView.frame = CGRectMake(0, self.topLayoutGuide.length, width, 44);
+    
+    /*self.topView.frame = CGRectMake(0, self.topLayoutGuide.length, width, 44);
     
     CGFloat yOriginOfBottomView = CGRectGetMaxY(self.topView.frame) + width;
     CGFloat heightOfBottomView = CGRectGetHeight(self.view.frame) - yOriginOfBottomView;
     self.bottomView.frame = CGRectMake(0, yOriginOfBottomView, width, heightOfBottomView);
     
-    /*CGFloat thirdOfWidth = width/3;
+    self.cropBox.frame = CGRectMake(0, CGRectGetMaxY(self.topView.frame), width, width);*/
+    CGFloat cropBoxHeight = CGRectGetHeight(self.view.frame);
     
-    for (int i=0; i < 4; i++) {
-        UIView *horizontalLine = self.horizontalLines[i];
-        UIView *verticalLine = self.verticalLines[i];
-        
-        horizontalLine.frame = CGRectMake(0, (i * thirdOfWidth) + CGRectGetMaxY(self.topView.frame), width, 0.5);
-        
-        CGRect verticalFrame = CGRectMake( i * thirdOfWidth, CGRectGetMaxY(self.topView.frame), 0.5, width);
-        
-        if (i == 3) {
-            verticalFrame.origin.x -= 0.5;
-        }
-        
-        verticalLine.frame = verticalFrame;
-    }*/
-    
-    self.cropBox.frame = CGRectMake(0, CGRectGetMaxY(self.topView.frame), width, width);
+    self.cropBox.frame = CGRectMake(0, 0, width, cropBoxHeight);
     
     self.imagePreview.frame = self.view.bounds;
     self.captureVideoPreviewLayer.frame= self.imagePreview.bounds;

@@ -64,7 +64,7 @@
     CGRect cropRect = CGRectZero;
     
     CGFloat edgeSize = MIN(CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame));
-    cropRect.size = CGSizeMake(edgeSize, edgeSize);
+    cropRect.size = CGSizeMake(edgeSize, CGRectGetHeight(self.view.frame));
     
     
     CGSize size = self.view.frame.size;
