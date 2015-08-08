@@ -16,6 +16,7 @@
 #import "MediaFullScreenAnimator.h"
 #import "CameraViewController.h"
 #import "ImageLibraryViewController.h"
+#import "PostToInstagramViewController.h"
 
 @interface ImagesTableViewController ()<MediaTableViewCellDelegate,UIViewControllerTransitioningDelegate,CameraViewControllerDelegate,
     ImageLibraryViewControllerDelegate>
@@ -405,26 +406,39 @@
     return;
 }
 
+//Where did this method came from?
+-(void) handleImage:(UIImage *) image withNavigationController:(UINavigationController *)nav{
+    if (image) {
+        PostToInstagramViewController *postVC = [[PostToInstagramViewController alloc] initWithImage:image];
+        
+        [nav pushViewController:postVC animated:YES];
+    }else{
+        [nav dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
 -(void) imageLibraryViewController:(ImageLibraryViewController *)imageLibraryViewController didCompleteWithImage:(UIImage *)image{
-    [imageLibraryViewController dismissViewControllerAnimated:YES completion:^{
+    /*[imageLibraryViewController dismissViewControllerAnimated:YES completion:^{
         if (image) {
             NSLog(@"Got an image!");
         }else{
             NSLog(@"Closed without an image");
         }
-    }];
+    }];*/
+    [self handleImage:image withNavigationController:imageLibraryViewController.navigationController];
 }
 
 
 
 -(void) cameraViewController:(CameraViewController *)cameraViewController didCompletewithImage:(UIImage *)image{
-    [cameraViewController dismissViewControllerAnimated:YES completion:^{
+    /*[cameraViewController dismissViewControllerAnimated:YES completion:^{
         if (image) {
             NSLog(@"Got an image!");
         }else{
             NSLog(@"Closed without and image.");
         }
-    }];
+    }];*/
+    [self handleImage:image withNavigationController:cameraViewController.navigationController];
 }
 
 @end

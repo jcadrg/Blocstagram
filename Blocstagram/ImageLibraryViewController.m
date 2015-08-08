@@ -65,7 +65,7 @@
     
     //PHFetchOptions describes different options when retrieving an image, we are choosing to sort them by date of creation
     PHFetchOptions *options = [[PHFetchOptions alloc] init];
-    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"CreationDate" ascending:YES]];
+    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
     
     self.result = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:options];
     
