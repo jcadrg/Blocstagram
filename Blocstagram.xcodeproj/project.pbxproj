@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5D4CCB1D1B6577AD00780C7F /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D4CCB1C1B6577AD00780C7F /* CameraViewController.m */; };
 		5D4FC9891B72A06300FE4505 /* PostToInstagramViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D4FC9881B72A06300FE4505 /* PostToInstagramViewController.m */; };
+		5D90DFD61B76C3CE00F4AA1C /* FilterViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D90DFD51B76C3CE00F4AA1C /* FilterViewCell.m */; };
 		5D91F4011B4F3E4A00385E0B /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D91F4001B4F3E4A00385E0B /* LoginViewController.m */; };
 		5D9276E91B3B5E4F00F3EA28 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9276E81B3B5E4F00F3EA28 /* main.m */; };
 		5D9276EC1B3B5E4F00F3EA28 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9276EB1B3B5E4F00F3EA28 /* AppDelegate.m */; };
@@ -60,6 +61,8 @@
 		5D4CCB1C1B6577AD00780C7F /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
 		5D4FC9871B72A06300FE4505 /* PostToInstagramViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostToInstagramViewController.h; sourceTree = "<group>"; };
 		5D4FC9881B72A06300FE4505 /* PostToInstagramViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostToInstagramViewController.m; sourceTree = "<group>"; };
+		5D90DFD41B76C3CE00F4AA1C /* FilterViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterViewCell.h; sourceTree = "<group>"; };
+		5D90DFD51B76C3CE00F4AA1C /* FilterViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterViewCell.m; sourceTree = "<group>"; };
 		5D91F3FF1B4F3E4A00385E0B /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = ../LoginViewController.h; sourceTree = "<group>"; };
 		5D91F4001B4F3E4A00385E0B /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = ../LoginViewController.m; sourceTree = "<group>"; };
 		5D9276E31B3B5E4F00F3EA28 /* Blocstagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blocstagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -198,6 +201,8 @@
 				5D4CCB1C1B6577AD00780C7F /* CameraViewController.m */,
 				5D99898A1B69710200B14787 /* CropBox.h */,
 				5D99898B1B69710200B14787 /* CropBox.m */,
+				5D90DFD41B76C3CE00F4AA1C /* FilterViewCell.h */,
+				5D90DFD51B76C3CE00F4AA1C /* FilterViewCell.m */,
 				5D4FC9871B72A06300FE4505 /* PostToInstagramViewController.h */,
 				5D4FC9881B72A06300FE4505 /* PostToInstagramViewController.m */,
 				5D9E66AF1B67125E00EC8D60 /* UIImage+ImageUtilities.h */,
@@ -412,6 +417,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D90DFD61B76C3CE00F4AA1C /* FilterViewCell.m in Sources */,
 				5DE8D5761B54ECBD000E1363 /* MediaFullScreenViewController.m in Sources */,
 				5D99898F1B69A0AE00B14787 /* CropImageViewController.m in Sources */,
 				5D99CE5E1B3CBF43008CEA58 /* User.m in Sources */,

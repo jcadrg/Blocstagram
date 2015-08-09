@@ -7,6 +7,7 @@
 //
 
 #import "PostToInstagramViewController.h"
+#import "FilterViewCell.h"
 
 @interface PostToInstagramViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UIDocumentInteractionControllerDelegate>
 
@@ -79,7 +80,7 @@
         
     }
     
-    [self.filterCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+    [self.filterCollectionView registerClass:[FilterViewCell class] forCellWithReuseIdentifier:@"filterCell"];
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.filterCollectionView.backgroundColor = [UIColor whiteColor];
@@ -141,12 +142,14 @@
 //When the cell loads, we have to make sure there's an image view and a label on it, and set their content from the appropiate arrays
 
 -(UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    UICollectionViewCell *cell =[collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+    /*UICollectionViewCell *cell =[collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     
     static NSInteger imageViewTag = 1000;
-    static NSInteger labelTag = 1001;
+    static NSInteger labelTag = 1001;*/
     
-    UIImageView *thumbnail = (UIImageView *)[cell.contentView viewWithTag:imageViewTag];
+    FilterViewCell *cell =(FilterViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"filterCell" forIndexPath:indexPath];
+    
+    /*UIImageView *thumbnail = (UIImageView *)[cell.contentView viewWithTag:imageViewTag];
     UILabel *label = (UILabel *)[cell.contentView viewWithTag:labelTag];
     
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.filterCollectionView.collectionViewLayout;
@@ -172,7 +175,10 @@
     }
     
     thumbnail.image = self.filterImages[indexPath.row];
-    label.text = self.filterTitles[indexPath.row];
+    label.text = self.filterTitles[indexPath.row];*/
+    
+    cell.filterImage = self.filterImages[indexPath.row];
+    cell.filterTitle = self.filterTitles [indexPath.row];
     
     return cell;
 }
@@ -355,6 +361,36 @@
         }
         
     
+    }];
+    
+    //Polaroid Filter
+    [self.photoFilterOperationQueue addOperationWithBlock:^{
+        CIFilter *polaroidFilter = [CIFilter filterWithName:@"CIPhotoEffectInstant"];
+        
+        if (polaroidFilter) {
+            
+            [polaroidFilter setValue:sourceCIImage forKey:kCIInputImageKey];
+            [self addCIImageToCollectionView:polaroidFilter.outputImage withFilterTitle:NSLocalizedString(@"Polaroid", @"Polaroid Filter")];
+            
+        }
+    }];
+    
+    //Compound filter I made up, i apologize in advance if the outcome is horrible.
+    
+    [self.photoFilterOperationQueue addOperationWithBlock:^{
+        CIFilter *constantColor = [CIFilter filterWithName:@"CIConstantColorGenerator"];
+        
+        if (constantColor) {
+            CIColor *grayColor = [CIColor colorWithString:@"0.3 0.3 0.3 1.0"];
+            [constantColor setValue:grayColor forKey:@"inputColor"];
+            
+            CIImage *result = constantColor.outputImage;
+            CIImage *imageWithConstantColor = [CIFilter filterWithName:@"SourceOverCompositing" keysAndValues:kCIInputImageKey, result, kCIInputBackgroundImageKey,sourceCIImage , nil].outputImage;
+            
+            [self addCIImageToCollectionView:imageWithConstantColor withFilterTitle:NSLocalizedString(@"Made Up Filter", @"Made Up Filter")];
+        }
+        
+        
     }];
 }
 
