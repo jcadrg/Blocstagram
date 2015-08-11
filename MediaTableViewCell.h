@@ -28,7 +28,9 @@
 
 @property (nonatomic,strong, readonly) ComposeCommentView *commentView;
 
-+(CGFloat) heightForMediaItem:(Media *)mediaItem width:(CGFloat)width;
+@property (nonatomic, strong) UITraitCollection *overrideTraitCollection;
+
++(CGFloat) heightForMediaItem:(Media *)mediaItem width:(CGFloat)width traitCollection:(UITraitCollection *) traitCollection;
 
 -(void) stopComposingComment;
 

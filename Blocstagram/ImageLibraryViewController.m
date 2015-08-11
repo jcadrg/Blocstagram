@@ -68,6 +68,7 @@
     options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
     
     self.result = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:options];
+    [self.collectionView reloadData];
     
 }
 
@@ -80,7 +81,7 @@
                 if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized) {
                     dispatch_sync(dispatch_get_main_queue(),^{
                         [self loadAssets];
-                        [self.collectionView reloadData];
+                        
                     });
             }
         }];
