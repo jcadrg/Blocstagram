@@ -9,11 +9,12 @@
 #import "MediaFullScreenViewController.h"
 #import "Media.h"
 
-@interface MediaFullScreenViewController ()<UIScrollViewDelegate>
+@interface MediaFullScreenViewController ()<UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 
 @property(nonatomic, strong) UITapGestureRecognizer *tap;
 @property(nonatomic,strong) UITapGestureRecognizer *doubleTap;
+@property(nonatomic, strong) UITapGestureRecognizer *assignmentTap;
 
 @end
 
@@ -93,6 +94,21 @@
     
 }
 
+-(void) viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    UITapGestureRecognizer *assignmentTap = [[UITapGestureRecognizer alloc] init];
+    [assignmentTap addTarget:self action:@selector(assignmentTapFired:)];
+    assignmentTap.delegate = self;
+    self.assignmentTap = assignmentTap;
+    [self.view.window addGestureRecognizer:self.assignmentTap];
+}
+
+-(void) viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.view.window removeGestureRecognizer:self.assignmentTap];
+}
+
 #pragma mark - UIScrollDelegate
 //#6
 -(UIView *) viewForZoomingInScrollView:(UIScrollView *)scrollView{
@@ -167,6 +183,14 @@
         //#9
         [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
     }
+}
+
+-(void) assignmentTapFired:(UIGestureRecognizer *) sender{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    return YES;
 }
 
 

@@ -79,13 +79,19 @@
         
     }
     
+    NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(_previewImage, _filterCollectionView, _sendButton);
+    
     [self.filterCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+    NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_previewImageView][_filterCollectionView][_sendButton]" options:kNilOptions metrics:nil views:viewsDictionary];
+    [self.view addConstraints:constraints];
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.filterCollectionView.backgroundColor = [UIColor whiteColor];
     
     self.navigationItem.title = NSLocalizedString(@"Apply Filter", @"apply filter view title");
 }
+
+
 
 
 -(void) viewWillLayoutSubviews{
@@ -392,6 +398,7 @@
 //ask!!!
 
 -(void) sendImageToInstagramWithCaption:(NSString *) caption{
+    
     NSData *imageData = UIImageJPEGRepresentation(self.previewImage.image, 0.9f);
     
     NSURL *tmpDirUrl = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
@@ -411,7 +418,7 @@
     self.documentController.delegate = self;
     
     if (caption.length >0) {
-        self.documentController.annotation =@{@"InstagramCaption":caption};
+        self.documentController.annotation = @{@"InstagramCaption":caption};
     }
     
     if (self.sendButton.superview) {
