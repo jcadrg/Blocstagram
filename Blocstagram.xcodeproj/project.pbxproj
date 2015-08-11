@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D1B32F61B7A9A7800B929A5 /* UserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1B32F51B7A9A7800B929A5 /* UserTests.m */; };
 		5D4CCB1D1B6577AD00780C7F /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D4CCB1C1B6577AD00780C7F /* CameraViewController.m */; };
 		5D4FC9891B72A06300FE4505 /* PostToInstagramViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D4FC9881B72A06300FE4505 /* PostToInstagramViewController.m */; };
 		5D91F4011B4F3E4A00385E0B /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D91F4001B4F3E4A00385E0B /* LoginViewController.m */; };
@@ -56,6 +57,7 @@
 
 /* Begin PBXFileReference section */
 		5CA341C9927FEB70EFF15C31 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D1B32F51B7A9A7800B929A5 /* UserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTests.m; sourceTree = "<group>"; };
 		5D4CCB1B1B6577AD00780C7F /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
 		5D4CCB1C1B6577AD00780C7F /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
 		5D4FC9871B72A06300FE4505 /* PostToInstagramViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostToInstagramViewController.h; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				5D9277021B3B5E4F00F3EA28 /* BlocstagramTests.m */,
+				5D1B32F51B7A9A7800B929A5 /* UserTests.m */,
 				5D9277001B3B5E4F00F3EA28 /* Supporting Files */,
 			);
 			path = BlocstagramTests;
@@ -440,6 +443,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D1B32F61B7A9A7800B929A5 /* UserTests.m in Sources */,
 				5D9277031B3B5E4F00F3EA28 /* BlocstagramTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
