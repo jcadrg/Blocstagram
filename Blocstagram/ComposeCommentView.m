@@ -64,7 +64,7 @@
         self.button.frame = CGRectMake(buttonX, 10, 80, 20);
         
     }else{
-        self.textView.backgroundColor = [UIColor colorWithRed:.0898 green:0.898 blue:0.898 alpha:1];
+        self.textView.backgroundColor = [UIColor colorWithRed:0.898 green:0.898 blue:0.898 alpha:1];
         self.button.backgroundColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1];
         
         
